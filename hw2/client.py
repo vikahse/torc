@@ -27,7 +27,7 @@ class RaftClient:
                         self.master = f"127.0.0.1:{data.get('master_id')}"
                         await self.read(key)
                     self.master = f"127.0.0.1:{data.get('master_id')}"
-                    print(data)
+                    print(f"read response:", data)
                     return data
             except Exception as e:
                 print(f"Ошибка чтения с реплики {peer}: {e}")
@@ -44,7 +44,7 @@ class RaftClient:
                         self.peers[self.master] = False
                         self.master = f"127.0.0.1:{data.get('master_id')}"
                         await self.write(operation, key, value)
-                    print(data)
+                    print(f"{operation} response:", data)
                     return data
             except Exception as e:
                 print(f"Ошибка записи на мастер {self.master}: {e}")
@@ -56,59 +56,65 @@ async def main():
 
     # Запись
     response = await client.write("create", "key1", f"value1")
-    print("Create response:", response)
+    # print("Create response:", response)
 
+    print("*" * 10)
     time.sleep(50)
 
     response = await client.read(f"key1")
-    print("Read response:", response)
+    # print("Read response:", response)
 
     # Обновление
     response = await client.write("update", f"key1", f"value1_new")
-    print("Update response:", response)
+    # print("Update response:", response)
 
+    print("*" * 10)
     time.sleep(50)
 
     response = await client.read(f"key1")
-    print("Read response:", response)
+    # print("Read response:", response)
 
     # Удаление
     response = await client.write("delete", f"key1")
-    print("Delete response:", response)
+    # print("Delete response:", response)
 
+    print("*" * 10)
     time.sleep(50)
 
     response = await client.read(f"key1")
-    print("Read response:", response)
+    # print("Read response:", response)
 
     ######################
 
     # Запись
     response = await client.write("create", "key2", f"value2")
-    print("Create response:", response)
+    # print("Create response:", response)
 
+    print("*" * 10)
     time.sleep(50)
 
     response = await client.read(f"key2")
-    print("Read response:", response)
+    # print("Read response:", response)
 
     # Обновление
     response = await client.write("update", f"key2", f"value2_new")
-    print("Update response:", response)
+    # print("Update response:", response)
 
+    print("*" * 10)
     time.sleep(50)
 
     response = await client.read(f"key2")
-    print("Read response:", response)
+    # print("Read response:", response)
 
     # Удаление
     response = await client.write("delete", f"key2")
-    print("Delete response:", response)
+    # print("Delete response:", response)
 
+    print("*" * 10)
     time.sleep(50)
 
     response = await client.read(f"key2")
-    print("Read response:", response)
+    # print("Read response:", response)
 
 if __name__ == "__main__":
     asyncio.run(main())
