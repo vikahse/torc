@@ -217,8 +217,14 @@ class LWWMap:
     def update(self, key: str, value: Any, is_delete: bool = False) -> Operation:
         self.vector_clock.increment(self.replica_id)
 
-        dependencies = {op.operation_id for op in self.operations
-                        if op.key == key}
+        # dependencies = {op.operation_id for op in self.operations
+        #                 if op.key == key}
+
+        dependencies = set()
+        for op in self.operations:
+            if op.key == key:
+                dependencies.add(op.operation_id)
+                dependencies.update(op.dependencies)
 
         operation = Operation(
             operation_id=str(uuid.uuid4()),
